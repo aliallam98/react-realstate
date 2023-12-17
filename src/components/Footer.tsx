@@ -19,7 +19,7 @@ const Footer = () => {
   ];
 
   const renderSocialMediaLinks = () =>
-    socialMediaLinks.map((link, i) => (
+      socialMediaLinks.map((link, i) => (
       <Link to={link.link} key={i} className="text-gray-700 hover:text-gray-900">
         {link.icon}
       </Link>

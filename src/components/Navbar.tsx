@@ -47,12 +47,12 @@ const links = [
     path: "/",
   },
   {
-    label: "Link",
-    path: "/",
+    label: "Listings",
+    path: "/listings",
   },
   {
-    label: "Link",
-    path: "/",
+    label: "About",
+    path: "/about",
   },
 ];
 

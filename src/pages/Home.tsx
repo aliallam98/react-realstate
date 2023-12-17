@@ -1,4 +1,4 @@
-import Card from "../components/Card";
+// import Card from "../components/Card";
 import Footer from "../components/Footer";
 import LandingPage from "../components/LandingPage";
 import Newsletter from "../components/Newsletter";
@@ -9,7 +9,7 @@ const Home = () => {
     <>
       <LandingPage />
       <Section />
-      <Card/>
+      {/* <Card/> */}
       <Newsletter/>
       <Footer/>
     </>

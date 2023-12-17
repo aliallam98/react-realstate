@@ -9,7 +9,7 @@ interface IProps {
 const InputWithLabel = ({type,name,label,onChange,value}: IProps) => {
   return (
 <div
-                    className="relative flex flex-col  mb-10 w-full lg:w-[45%]"
+                    className="relative flex flex-col  mb-10 w-full "
                   >
                     <label
                       htmlFor={name}

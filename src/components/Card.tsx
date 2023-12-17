@@ -13,10 +13,16 @@ const imgArr = [
   "https://a0.muscache.com/im/pictures/miso/Hosting-835435993677010128/original/4d4dd825-78c2-4f4f-97a0-435f68ce19bc.jpeg?im_w=720",
 ];
 
-const Card = () => {
+interface ICard {
+  id:string
+  title:string
+  address:string
+  price:string
+}
+
+const Card = ({address,price}:ICard) => {
   return (
-    <section className="px-10 grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-      <article className="relative border border-neutral-200 shadow-md">
+      <article className="relative border border-neutral-200 shadow-md max-w-[400px] mx-auto">
       <FaRegHeart className="absolute top-4 right-4 cursor-pointer z-10 " size={20}/>
         <Swiper
           modules={[Navigation, Pagination]}
@@ -33,15 +39,14 @@ const Card = () => {
         </Swiper>
         <div className="p-2">
           <div className="flex items-center justify-between">
-            <p>Adresse</p>
+            <p>{address}</p>
             <span>Rate</span>
           </div>
           <p >lorem</p>
-          <p className="product-card-description">Price ${"60"} night </p>
+          <p className="product-card-description">${price} night </p>
         </div>
         
       </article>
-    </section>
   );
 };
 
