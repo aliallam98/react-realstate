@@ -2,7 +2,7 @@ import { useDispatch,useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { BeatLoader } from "react-spinners";
 import {ChangeEvent, useEffect, useRef,useState} from 'react'
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {userUpdateStart,userUpdateSuccess,userUpdateFailure} from '../redux/user/userSlice'
 import {getDownloadURL, getStorage, ref, uploadBytesResumable} from 'firebase/storage'
 import { app } from "../firebase";
@@ -101,7 +101,7 @@ useEffect(() => {
 
 
 
-  return currentUser ? (
+  return  (
     <section className="p-20">
       <h3 className="text-center text-4xl mb-6">Hello, {currentUser.name}</h3>
       <img className="w-20 h-20 rounded-full mx-auto my-4 object-contain" src={formData?.profileImage?.downloadURL || currentUser.profileImage} alt="profileImage"
@@ -158,7 +158,7 @@ useEffect(() => {
       </form>
       <button type="button" className="py-2 px-4 block mx-auto mt-2"><Link to={'/my-listings'}>My Listings</Link></button>
     </section>
-  ) : <Navigate to={'/login'}/>
+  ) 
 };
 
 export default Profile;

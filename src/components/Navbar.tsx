@@ -3,7 +3,6 @@ import { useDisclosure } from '@chakra-ui/react'
 import { GrClose } from "react-icons/gr";
 
 
-import { jwtDecode } from "jwt-decode";
 import { useSelector,useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 
@@ -39,6 +38,7 @@ import {
   } from '@chakra-ui/react'
   import { RxHamburgerMenu } from "react-icons/rx";
 import { logOutStart,logOutEnd } from "../redux/user/userSlice";
+import { jwtDecode } from "jwt-decode";
 
 
 const links = [

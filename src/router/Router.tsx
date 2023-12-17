@@ -11,6 +11,15 @@ import Listings from "../pages/Listings";
 import EditListing from '../pages/EditListing'
 import Services from "../pages/Services";
 import About from "../pages/About";
+import ProtectedRoute from "../components/ProtectedRoute";
+
+
+
+
+
+
+
+
 
 const router = createBrowserRouter([
   {
@@ -39,7 +48,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: <ProtectedRoute><Profile /></ProtectedRoute>,
       },
       {
         path: "/create-list",
@@ -51,7 +60,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-listings",
-        element: <UserListings />,
+        element: <ProtectedRoute><UserListings /></ProtectedRoute>,
       },
       {
         path: "/listing/:id",

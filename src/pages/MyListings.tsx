@@ -1,6 +1,6 @@
-import { Link, Navigate } from "react-router-dom";
-import {  useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { Link,  } from "react-router-dom"; //Navigate
+// import {  useSelector } from "react-redux";
+// import { RootState } from "../redux/store";
 import Button from "../components/Button"
 import InputWithLabel from "../components/InputWithLabel"
 import { useEffect, useMemo, useState,} from "react"
@@ -72,7 +72,7 @@ const MyListings = () => {
   const [listing,setListing] = useState([])
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useEffect(()=>{axios.get('http://localhost:5000/api/listing/').then((res:any)=>setListing(res.data.listings))},[])
-  const { currentUser } = useSelector((state: RootState) => state.user);
+  // const { currentUser } = useSelector((state: RootState) => state.user);
   const data : IData[]= useMemo(()=> listing , [listing])
   const {
     getTableProps,
@@ -94,7 +94,7 @@ const MyListings = () => {
 
 const {pageIndex,pageSize,globalFilter} = state
 
-  return currentUser ? (
+  return  (
     listing.length ? <section className="p-10 text-center">
     <div className="container h-full p-5 shadow-md border border-neutral-200">
       <h3 className="text-center text-lg font-semibold">My Listings</h3>
@@ -164,9 +164,7 @@ const {pageIndex,pageSize,globalFilter} = state
       </div>
     </div>
   </section> : <LoadingComponent/>
-  ) : (
-    <Navigate to={"/login"} />
-  )
+  ) 
 
 };
 

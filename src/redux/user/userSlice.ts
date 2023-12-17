@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface userState {
+  token: string;
   currentUser: null;
   error: null;
   loading: boolean;
 }
 
 const initialState: userState = {
+  token:'',
   currentUser: null,
   error: null,
   loading: false, //Pending
@@ -21,6 +23,8 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     signInSuccess: (state, action: PayloadAction<null>) => {
+      console.log(action);
+      
       state.currentUser = action.payload;
       state.loading = false;
       state.error = null;
