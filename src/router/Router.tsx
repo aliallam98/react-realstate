@@ -9,6 +9,7 @@ import Listing from "../pages/Listing";
 import UserListings from "../pages/MyListings";
 import Listings from "../pages/Listings";
 import EditListing from '../pages/EditListing'
+import Services from "../pages/Services";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/services",
+        element: <Services />,
       },
       {
         path: "/login",
