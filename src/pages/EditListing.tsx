@@ -30,6 +30,7 @@ const schema = yup
     price: yup.number().positive().optional(),
     purpose: yup.string().optional(),
     // // category: yup.string(),
+     parking: yup.boolean(),
      furnished: yup.boolean().optional(),
     // // features: yup.string(),
     images: yup.mixed().optional(),
@@ -51,6 +52,7 @@ interface IListing {
   bathrooms : number
   bedrooms : number
   furnished : boolean
+  parking : boolean
   purpose : string
   images : image[]
 }
@@ -194,6 +196,16 @@ const EditListing = () => {
         <div className="flex items-center gap-4">
         <label htmlFor="furnished">Furnished</label>
         <input type="checkbox" {...register("furnished")} id="furnished" disabled={loading} />
+        </div>
+                {/* CheckBox */}
+                <div className="flex items-center gap-4">
+          <label htmlFor="parking">Parking</label>
+          <input
+            type="checkbox"
+            {...register("parking")}
+            id="parking"
+            disabled={loading}
+          />
         </div>
 
 
