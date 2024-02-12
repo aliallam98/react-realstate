@@ -52,11 +52,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/create-list",
-        element: <CreateListing />,
+        element: <ProtectedRoute><CreateListing /></ProtectedRoute>,
+
       },
       {
         path: "/edit-listing/:id",
-        element: <EditListing/>,
+        element: <ProtectedRoute><EditListing/></ProtectedRoute>,
+
       },
       {
         path: "/my-listings",

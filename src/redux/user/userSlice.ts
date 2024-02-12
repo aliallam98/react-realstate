@@ -23,8 +23,6 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     signInSuccess: (state, action: PayloadAction<null>) => {
-      console.log(action);
-      
       state.currentUser = action.payload;
       state.loading = false;
       state.error = null;

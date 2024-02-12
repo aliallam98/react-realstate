@@ -6,47 +6,40 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { IListing } from "../types";
 
-const imgArr = [
-  "https://a0.muscache.com/im/pictures/miso/Hosting-835435993677010128/original/32003197-b28a-456d-abd2-26abd57eeaf7.jpeg?im_w=1200",
-  "https://a0.muscache.com/im/pictures/miso/Hosting-835435993677010128/original/94115cea-5913-48b1-99b8-aefb105f819f.jpeg?im_w=720",
-  "https://a0.muscache.com/im/pictures/miso/Hosting-835435993677010128/original/4d4dd825-78c2-4f4f-97a0-435f68ce19bc.jpeg?im_w=720",
-];
-
-interface ICard {
-  id:string
-  title:string
-  address:string
-  price:string
-}
-
-const Card = ({address,price}:ICard) => {
+const Card = ({ address, price, images, description }: IListing) => {
   return (
-      <article className="relative border border-neutral-200 shadow-md max-w-[400px] mx-auto">
-      <FaRegHeart className="absolute top-4 right-4 cursor-pointer z-10 " size={20}/>
-        <Swiper
-          modules={[Navigation, Pagination]}
-          slidesPerView={1}
-          navigation
-          pagination={{ clickable: true }}
-        >
-          {imgArr.map((ele,i) => (
-            <SwiperSlide key={i}>
-              <img className="h-[300px] object-cover bg-center" src={ele} alt="silder image" />
-            </SwiperSlide>
-          ))}
-          
-        </Swiper>
-        <div className="p-2">
-          <div className="flex items-center justify-between">
-            <p>{address}</p>
-            <span>Rate</span>
-          </div>
-          <p >lorem</p>
-          <p className="product-card-description">${price} night </p>
+    <article className="relative border border-neutral-200  rounded-3xl overflow-hidden shadow-md h-[415px] max-w-[400px] mx-auto">
+      <FaRegHeart
+        className="absolute top-4 right-4 cursor-pointer z-10 "
+        size={20}
+      />
+      <Swiper
+        modules={[Navigation, Pagination]}
+        slidesPerView={1}
+        navigation
+        pagination={{ clickable: true }}
+      >
+        {images?.map((ele, i) => (
+          <SwiperSlide key={i}>
+            <img
+              className="h-[300px] object-cover mx-auto "
+              src={ele.secure_url}
+              alt="silder image"
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+      <div className="p-2">
+        <div className="flex items-center justify-between">
+          <p>{address}</p>
+          <span>Rate</span>
         </div>
-        
-      </article>
+        <p>{description?.split(" ").slice(0, 10).join(" ")}</p>
+        <p className="product-card-description">${price} - Night </p>
+      </div>
+    </article>
   );
 };
 

@@ -1,19 +1,17 @@
 interface IProps {
-    name:string
-    label:string
-    type:string
-    onChange?:(e: React.ChangeEvent<HTMLInputElement>)=> void
-    value?:string
+  name: string;
+  label: string;
+  type: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
 }
 
-const InputWithLabel = ({type,name,label,onChange,value}: IProps) => {
+const InputWithLabel = ({ type, name, label, onChange, value }: IProps) => {
   return (
-<div
-                    className="relative flex flex-col  mb-10 w-full "
-                  >
-                    <label
-                      htmlFor={name}
-                      className={`
+    <div className="relative flex flex-col  mb-10 w-full ">
+      <label
+        htmlFor={name}
+        className={`
                     text-neutral-600
                     absolute
                     top-0
@@ -25,18 +23,18 @@ const InputWithLabel = ({type,name,label,onChange,value}: IProps) => {
                     scale
                     -translate-y-3
                   `}
-                    >
-                        {label}
-                    </label>
+      >
+        {label}
+      </label>
 
-                    <input
-                    onChange={onChange}
-                    value={value || ""}
-                      id={name}
-                      name={name}
-                      type={type}
-                      placeholder=" "
-                      className={`
+      <input
+        onChange={onChange}
+        value={value || ""}
+        id={name}
+        name={name}
+        type={type}
+        placeholder=" "
+        className={`
                     block
                     w-full
                     p-2
@@ -46,9 +44,9 @@ const InputWithLabel = ({type,name,label,onChange,value}: IProps) => {
                     focus:outline-none
                     focus:ring-0
                   `}
-                    />
-                  </div>
-  )
-}
+      />
+    </div>
+  );
+};
 
-export default InputWithLabel
+export default InputWithLabel;

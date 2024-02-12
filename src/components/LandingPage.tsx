@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -24,7 +25,9 @@ const LandingPage = () => {
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque
           excepturi esse veritatis doloribus officiis veniam?
         </p>
-        <button className=" py-2 px-4 bg-[#223f39] text-white text-lg transition-transform hover:scale-110">Get Started</button>
+        <button className=" py-2 px-4 bg-[#223f39] text-white text-lg transition-transform hover:scale-110">
+          <Link to={"/create-list"} onClick={()=> window.scroll(0,0)}>Get Started</Link>
+        </button>
       </div>
       {/* <div className="absolute h-full w-full top-0 left-0 bg-black/70 "></div> */}
       <div className="absolute h-1/2 w-full bottom-0 left-0  -z-10 bg-[#bdc3b4]"></div>

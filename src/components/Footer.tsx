@@ -19,23 +19,25 @@ const Footer = () => {
   ];
 
   const renderSocialMediaLinks = () =>
-      socialMediaLinks.map((link, i) => (
-      <Link to={link.link} key={i} className="text-gray-700 hover:text-gray-900">
+    socialMediaLinks.map((link, i) => (
+      <Link
+        to={link.link}
+        key={i}
+        className="text-gray-700 hover:text-gray-900"
+      >
         {link.icon}
       </Link>
     ));
 
   return (
-    <footer className="border-t border-neutral-200-200 py-8  ">
+    <footer className="border-t border-neutral-200  text-white  ">
       <div className="container">
-        <div className="flex  items-center justify-around mb-4 ">
+        <div className="flex  items-center justify-around mb-4 pt-4">
           <h3 className="text-gray-800 font-bold">EcoHaven Realty</h3>
           <div className="flex gap-4">{renderSocialMediaLinks()}</div>
         </div>
 
-
-        
-        <div className="flex flex-wrap justify-around gap-4 ">
+        {/* <div className="flex flex-wrap justify-around gap-4 ">
           <div className="w-full md:w-[24%] ">
             <h3 className="text-gray-800 font-bold">EcoHaven Realty</h3>
             <p className="text-gray-600 mt-2">
@@ -113,12 +115,10 @@ const Footer = () => {
 
 
 
-        </div>
-        <div className="mt-4 pt-4 text-center text-gray-600  border-t border-neutral-200-200">
-          <p>
-            &copy;2023 EcoHaven Realty Real Estate . All rights
-            reserved.
-          </p>
+        </div> */}
+
+        <div className="mt-4 pt-4 text-center text-gray-600   border-neutral-200">
+          <p>&copy;2023 EcoHaven Realty Real Estate . All rights reserved.</p>
         </div>
       </div>
     </footer>
@@ -127,13 +127,13 @@ const Footer = () => {
 
 export default Footer;
 
-
-
-{/* <ul className="text-gray-600 text-right">
+{
+  /* <ul className="text-gray-600 text-right">
 <li>
   <Link to="/privacy-policy">Privacy Policy</Link>
 </li>
 <li>
   <Link to="/terms-of-service">Terms of Service</Link>
 </li>
-</ul> */}
+</ul> */
+}

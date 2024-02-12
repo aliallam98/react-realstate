@@ -6,31 +6,23 @@ import { IoExitOutline } from "react-icons/io5";
 import Card from "../components/Card";
 import { Link } from "react-router-dom";
 
-interface ICard {
-  _id: string;
-  title: string;
-  address: string;
-  price: string;
-}
-
 axios.defaults.withCredentials = true;
-import Cookies from "js-cookie";
 import InputWithLabel from "../components/InputWithLabel";
 import Button from "../components/Button";
 import LoadingComponent from "../components/LoadingComponent";
-const token = Cookies.get("x");
-console.log(token);
+import useGetAllListings from "../hooks/useGetAllListings";
 
 const FilteringMenu = () => {
-  const [loading, setLoading] = useState(false);
-  const [listing, setListing] = useState([]);
+  const {isLoading,setIsLoading,listings,setListings,totalPages,setTotalPages} = useGetAllListings()
+
+
   const [isOpen, setIsOpen] = useState(false);
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-  console.log(listing);
-
   const navigate = useNavigate();
   const [filteringData, setFilteringData] = useState({
+    page: "1",
+    limit: "5",
     searchTerm: "",
     purpose: "all",
     parking: false,
@@ -41,6 +33,8 @@ const FilteringMenu = () => {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
+    const pageFromUrl = urlParams.get("page");
+    const limitFromUrl = urlParams.get("limit");
     const searchTermFromUrl = urlParams.get("searchTerm");
     const purposeFromUrl = urlParams.get("purpose");
     const parkingFromUrl = urlParams.get("parking");
@@ -53,9 +47,13 @@ const FilteringMenu = () => {
       parkingFromUrl ||
       furnishedFromUrl ||
       sortFromUrl ||
-      orderFromUrl
+      orderFromUrl ||
+      pageFromUrl ||
+      limitFromUrl
     ) {
       setFilteringData({
+        page: String(pageFromUrl),
+        limit: String(limitFromUrl),
         searchTerm: String(searchTermFromUrl),
         purpose: String(purposeFromUrl),
         parking: parkingFromUrl === "true" ? true : false,
@@ -67,12 +65,13 @@ const FilteringMenu = () => {
 
     const fetchListing = async () => {
       const searchQuery = urlParams.toString();
-      setLoading(true);
+      setIsLoading(true);
       await axios
         .get(`http://localhost:5000/api/listing/?${searchQuery}`)
         .then((res) => {
-          setListing(res.data.listings);
-          setLoading(false);
+          setListings(res.data.results.listings);
+          setTotalPages(res.data.results.totalPages);
+          setIsLoading(false);
         })
         .catch((error) => console.log(error));
     };
@@ -119,23 +118,26 @@ const FilteringMenu = () => {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
+    urlParams.set("page", filteringData.page);
+    urlParams.set("limit", filteringData.limit);
     urlParams.set("searchTerm", filteringData.searchTerm);
     urlParams.set("purpose", filteringData.purpose);
     urlParams.set("parking", String(filteringData.parking));
     urlParams.set("furnished", String(filteringData.furnished));
     urlParams.set("sort", filteringData.sort);
     urlParams.set("order", filteringData.order);
+
     const searchQuery = urlParams.toString();
     navigate(`/listings?${searchQuery}`);
   };
   return (
     <section className="relative p-4">
-      <h3 className="text-2xl font-semibold text-center my-4">
+      <h3 className="text-2xl font-semibold text-center my-6">
         Find Your Dream Home
       </h3>
       <div className="flex gap-10">
         <form
-          className={`flex flex-col gap-4 p-4 max-w-[300px]  h-[600px] shadow-md border relative duration-150  ${
+          className={`flex flex-col gap-4 p-4 max-w-[300px]  h-[600px] shadow-md border relative  ${
             isOpen ? "w-[300px]" : "w-16"
           } `}
           onSubmit={onSubmitHandler}
@@ -162,7 +164,7 @@ const FilteringMenu = () => {
               <div className="">
                 <h3 className="font-semibold">Purpose:</h3>
                 <div className="flex items-center gap-4">
-                  <div>
+                  <div className="flex items-center gap-x-2">
                     <label htmlFor="all">All</label>
                     <input
                       name="purpose"
@@ -173,7 +175,7 @@ const FilteringMenu = () => {
                       checked={filteringData.purpose === "all"}
                     />
                   </div>
-                  <div>
+                  <div className="flex items-center gap-x-2">
                     <label htmlFor="forRent">For Rent</label>
                     <input
                       name="purpose"
@@ -184,7 +186,7 @@ const FilteringMenu = () => {
                       checked={filteringData.purpose === "For Rent"}
                     />
                   </div>
-                  <div>
+                  <div className="flex items-center gap-x-2">
                     <label htmlFor="forSale">For Sale</label>
                     <input
                       name="purpose"
@@ -200,7 +202,7 @@ const FilteringMenu = () => {
               <div className="">
                 <h3 className="font-semibold">Amenities:</h3>
                 <div className="flex items-center gap-4">
-                  <div>
+                  <div className="flex items-center gap-x-2">
                     <label htmlFor="parking">Parking</label>
                     <input
                       name="parking"
@@ -210,7 +212,7 @@ const FilteringMenu = () => {
                       onChange={onChangeHandler}
                     />
                   </div>
-                  <div>
+                  <div className="flex items-center gap-x-2">
                     <label htmlFor="furnished">Furnished</label>
                     <input
                       name="furnished"
@@ -246,25 +248,32 @@ const FilteringMenu = () => {
             </>
           )}
         </form>
+
         <div className="grid grow justify-center grid-cols-[repeat(auto-fill,minmax(270px,300px))] gap-4">
-          
-          {loading ? <LoadingComponent/> : listing.map((listing: ICard) => (
-            <Link key={listing._id} to={`/listing/${listing._id}`}>
-              <Card
-                id={listing._id}
-                title={listing.title}
-                address={listing.address}
-                price={listing.price}
-              />
-            </Link>
-          ))}
-          
+          {isLoading ? (
+            <LoadingComponent />
+          ) : (
+            listings.map((listing) => (
+              <Link key={listing._id} to={`/listing/${listing._id}`}>
+                <Card
+                  title={listing.title}
+                  address={listing.address}
+                  price={listing.price}
+                  images={listing.images}
+                  description={listing.description}
+                />
+              </Link>
+            ))
+          )}
         </div>
       </div>
-      <Button
+      {totalPages > 1 && (
+        <Button
           title="Show More"
           className="block mx-auto py-2 px-4 bg-[#223f39] text-white mt-6 "
-          />
+          onClick={() => {}}
+        />
+      )}
     </section>
   );
 };

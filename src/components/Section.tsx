@@ -1,4 +1,5 @@
 import { LiaLongArrowAltRightSolid } from "react-icons/lia";
+import { Link } from "react-router-dom";
 
 const Section = () => {
   return (
@@ -6,19 +7,25 @@ const Section = () => {
       <div className="container flex p-8 gap-4 md:gap-8">
         <div className="w-[60%] flex flex-col justify-between">
           <div className="space-y-4 mb-4">
-            <h3 className="text-3xl font-medium">Explore From Anywhere Anytime</h3>
+            <h3 className="text-3xl font-medium">
+              Explore From Anywhere Anytime
+            </h3>
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis
               impedit dignissimos soluta cupiditate quasi suscipit et nostrum,
               quam rem quae dolores fuga qui alias ut!{" "}
             </p>
             <button className="flex items-center gap-2 border-b-2 border-[#223f39] py-2 px-4 hover:scale-110 transition-transform">
-              <span>See More</span>
-              <LiaLongArrowAltRightSolid size={20}/>
+              <span>
+                <Link to={"/listings"} onClick={() => window.scroll(0, 0)}>
+                  See More
+                </Link>
+              </span>
+              <LiaLongArrowAltRightSolid size={20} />
             </button>
           </div>
           <img
-          className=""
+            className=""
             src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1018&h=584"
             alt=""
           />

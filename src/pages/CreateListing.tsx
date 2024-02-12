@@ -7,6 +7,7 @@ import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import { PulseLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 // const dataInputs = [
 //   "name",
@@ -24,9 +25,9 @@ const schema = yup
     title: yup
       .string()
       .min(3, "Required And At Least 3 Char and max 25 ")
-      .max(25)
+      .max(100)
       .required(),
-    description: yup.string().min(3).max(250).required(),
+    description: yup.string().min(3).max(500).required(),
     address: yup.string().required(),
     bedrooms: yup.number().positive().integer().min(1).required(),
     bathrooms: yup.number().positive().integer().min(1).required(),
@@ -53,6 +54,7 @@ const schema = yup
 // }
 
 const CreateListing = () => {
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -66,8 +68,7 @@ const CreateListing = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
-    console.log(data);
-    
+
     setLoading(true);
     for (const key in data) {
       if (key === "images") {
@@ -93,15 +94,15 @@ const CreateListing = () => {
       .then((res) => {
         if (res.data.success) {
           toast.success("Successfully Created");
-          setLoading(false);
+          navigate(`/listing/${res.data.results._id}`)
         } else {
           toast.error(res.data.message);
         }
       })
       .catch((err) => {
         toast.error(err.message);
-        setLoading(false);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -252,17 +253,13 @@ const CreateListing = () => {
           {/* <p>{errors.images?.message} </p> */}
         </div>
 
-        {loading ? (
-          <PulseLoader />
-        ) : (
           <button
             className="block mx-auto py-2 px-4 border border-neutral-200 hover:scale-110 transition-transform"
             type="submit"
             disabled={loading}
           >
-            Create
+            {loading ? <PulseLoader />: "Create"}
           </button>
-        )}
       </form>
     </section>
   );

@@ -19,6 +19,10 @@
 .swiper-pagination {
   margin-bottom: 20px;
 }
-.swiper-pagination-bullet{
-  background:White !important;
+.swiper-pagination-bullet {
+  background: White !important;
+}
+
+.container {
+  max-width: 1350px;
 }
