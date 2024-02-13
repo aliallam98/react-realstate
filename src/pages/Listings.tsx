@@ -1,4 +1,11 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  ElementRef,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -10,23 +17,27 @@ axios.defaults.withCredentials = true;
 import InputWithLabel from "../components/InputWithLabel";
 import Button from "../components/Button";
 import LoadingComponent from "../components/LoadingComponent";
-import useGetAllListings from "../hooks/useGetAllListings";
+import { IListing } from "../types";
+import Pagination from "../components/Pagination";
 
 const FilteringMenu = () => {
-  const {isLoading,setIsLoading,listings,setListings,totalPages,setTotalPages} = useGetAllListings()
-
-
+  const [loading, setLoading] = useState(false);
+  const [listings, setListings] = useState<IListing[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
+  const formRef = useRef<ElementRef<"form">>(null);
   const toggleSidebar = () => setIsOpen(!isOpen);
+
+  console.log(totalPages);
 
   const navigate = useNavigate();
   const [filteringData, setFilteringData] = useState({
     page: "1",
-    limit: "5",
+    limit: "8",
     searchTerm: "",
     purpose: "all",
     parking: false,
-    furnished: false,
+    furnished: true,
     sort: "createdAt",
     order: "desc",
   });
@@ -64,14 +75,15 @@ const FilteringMenu = () => {
     }
 
     const fetchListing = async () => {
+      setLoading(true);
       const searchQuery = urlParams.toString();
-      setIsLoading(true);
       await axios
         .get(`http://localhost:5000/api/listing/?${searchQuery}`)
         .then((res) => {
-          setListings(res.data.results.listings);
+          const newListings = res.data.results.listings as IListing[];
+          setListings(newListings);
           setTotalPages(res.data.results.totalPages);
-          setIsLoading(false);
+          setLoading(false);
         })
         .catch((error) => console.log(error));
     };
@@ -79,7 +91,8 @@ const FilteringMenu = () => {
     fetchListing();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search]);
+  }, [location.search,filteringData.page]);
+
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
@@ -130,6 +143,24 @@ const FilteringMenu = () => {
     const searchQuery = urlParams.toString();
     navigate(`/listings?${searchQuery}`);
   };
+  // const showMoreHandler = () => {
+  //   const newPage = Number(filteringData.page) + 1;
+  //   setFilteringData({ ...filteringData, page: newPage.toString() });
+
+  //   // const urlParams = new URLSearchParams();
+  //   // urlParams.set("page", newPage.toString());
+  //   // const searchQuery = urlParams.toString();
+  //   // axios
+  //   //   .get(`http://localhost:5000/api/listing/?${searchQuery}`)
+  //   //   .then((res) => {
+  //   //     const newListings = res.data.results.listings as IListing[];
+  //   //     setListings([...listings, ...newListings]);
+  //   //     setTotalPages(res.data.results.totalPages);
+  //   //     setLoading(false);
+  //   //   })
+  //   //   .catch((error) => console.log(error));
+  //   // navigate(`/listings?${searchQuery}`);
+  // };
   return (
     <section className="relative p-4">
       <h3 className="text-2xl font-semibold text-center my-6">
@@ -137,6 +168,7 @@ const FilteringMenu = () => {
       </h3>
       <div className="flex gap-10">
         <form
+          ref={formRef}
           className={`flex flex-col gap-4 p-4 max-w-[300px]  h-[600px] shadow-md border relative  ${
             isOpen ? "w-[300px]" : "w-16"
           } `}
@@ -238,7 +270,7 @@ const FilteringMenu = () => {
                   <option value="price_desc">Price High To Low</option>
                   <option value="price_asc">Price Low To High</option>
                   <option value="createdAt_desc">Latest</option>
-                  <option value="createdAt_ase">Oldest</option>
+                  <option value="createdAt_asc">Oldest</option>
                 </select>
               </div>
               <Button
@@ -250,11 +282,15 @@ const FilteringMenu = () => {
         </form>
 
         <div className="grid grow justify-center grid-cols-[repeat(auto-fill,minmax(270px,300px))] gap-4">
-          {isLoading ? (
+          {loading ? (
             <LoadingComponent />
           ) : (
             listings.map((listing) => (
-              <Link key={listing._id} to={`/listing/${listing._id}`}>
+              <Link
+                key={listing._id}
+                to={`/listing/${listing._id}`}
+                className="h-fit"
+              >
                 <Card
                   title={listing.title}
                   address={listing.address}
@@ -267,13 +303,12 @@ const FilteringMenu = () => {
           )}
         </div>
       </div>
-      {totalPages > 1 && (
-        <Button
-          title="Show More"
-          className="block mx-auto py-2 px-4 bg-[#223f39] text-white mt-6 "
-          onClick={() => {}}
-        />
-      )}
+      <Pagination
+        page={filteringData.page}
+        totalPages={totalPages}
+        setFilteringData={setFilteringData}
+        filteringData={filteringData}
+      />
     </section>
   );
 };

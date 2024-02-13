@@ -89,7 +89,7 @@ const Profile = () => {
             })
             .then((res) => {
               console.log(res.data.results);
-              dispatch(userUpdateSuccess({...res.data.results}));
+              dispatch(userUpdateSuccess({ ...res.data.results }));
             })
             .catch((err) => {
               dispatch(userUpdateFailure(err.message));
@@ -108,7 +108,9 @@ const Profile = () => {
 
   return (
     <section className="p-20">
-      <h3 className="text-center text-4xl mb-6">Hello, {currentUser.name}</h3>
+      <h3 className="text-center text-4xl mb-6 capitalize">
+        Hello, {currentUser.userName}
+      </h3>
       <img
         className="w-20 h-20 rounded-full mx-auto my-4 object-contain"
         src={
@@ -151,7 +153,7 @@ const Profile = () => {
           type="text"
           name="userName"
           placeholder="Enter Your username"
-          defaultValue={currentUser.name}
+          defaultValue={currentUser.userName}
           onChange={onChangeHandler}
           disabled={loading}
         />

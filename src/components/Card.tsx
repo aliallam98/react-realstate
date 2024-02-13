@@ -36,8 +36,8 @@ const Card = ({ address, price, images, description }: IListing) => {
           <p>{address}</p>
           <span>Rate</span>
         </div>
-        <p>{description?.split(" ").slice(0, 10).join(" ")}</p>
-        <p className="product-card-description">${price} - Night </p>
+        <p className="">{description?.split(" ").slice(0, 9).join(" ")}</p>
+        <p className="absolute bottom-2">${price} - Night </p>
       </div>
     </article>
   );

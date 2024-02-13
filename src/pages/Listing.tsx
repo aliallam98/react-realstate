@@ -51,12 +51,10 @@ const Listing = () => {
       ) : (
         <div className="container">
           <h3 className="text-2xl font-semibold capitalize">
-            Four Seasons Apartment Living {listing?.title}
+            {listing?.title}
           </h3>
           <div className="flex items-center justify-between">
-            <p className="font-medium capitalize">
-              Qasr El Nil, Cairo Governorate, Egypt {listing?.address}
-            </p>
+            <p className="font-medium capitalize">{listing?.address}</p>
             <div className="flex items-center gap-8 my-4">
               <button className="border-b-2 border-neutral-200">Share</button>
               <button className="border-b-2 border-neutral-200">Save</button>
@@ -84,7 +82,7 @@ const Listing = () => {
               </div>
 
               <div className="flex gap-5 rounded-md">
-                {renderImages?.slice(0, 5)}
+                {renderImages?.slice(1, 5)}
               </div>
             </div>
           </Fancybox>

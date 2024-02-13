@@ -23,7 +23,7 @@ import { ColumnFilter } from "../components/ColumnFilter";
 import axios from "axios";
 import LoadingComponent from "../components/LoadingComponent";
 import toast from "react-hot-toast";
-import useGetAllListings from "../hooks/useGetAllListings";
+import useGetAllListings from "../hooks/useGetUserListings";
 import { IListing } from "../types";
 
 
@@ -83,16 +83,6 @@ const columns: Column<IListing>[] = [
 const MyListings = () => {
   const {isLoading,listings} = useGetAllListings()
 
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:5000/api/listing`)
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     .then((res: any) => setListing(res.data.results.listings));
-  // }, [listing]);
-
-
-  // const { currentUser } = useSelector((state: RootState) => state.user);
 
   
   const data: IListing[] = useMemo(() => listings, [listings]);
