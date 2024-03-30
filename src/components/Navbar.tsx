@@ -66,34 +66,36 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {currentUser ? (
-          <div className="flex  items-center">
-            <p className="cursor-pointer ">
-              <Link to={"/profile"}>{currentUser.userName}</Link>
-            </p>
-            <button
-              onClick={onClickHandler}
-              disabled={loading}
-              className="p-2 px-4"
-            >
-              Log Out
-            </button>
-          </div>
-        ) : (
-          <div>
-            <Button className="">
-              <Link to={"/login"}>Log In</Link>
-            </Button>
-            <button className="p-2 px-4">
-              <Link to={"/register"}>Sign Up</Link>
-            </button>
-          </div>
-        )}
+        <div className="hidden md:flex items-center gap-2">
+          {currentUser ? (
+            <>
+              <Button
+                asChild
+                className="bg-secondColor text-black hover:bg-secondColor/80"
+              >
+                <Link to={"/profile"}>{currentUser.userName}</Link>
+              </Button>
+              <Button onClick={onClickHandler} disabled={loading}>
+                Log Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button>
+                <Link to={"/login"}>Log In</Link>
+              </Button>
+              <Button>
+                <Link to={"/register"}>Sign Up</Link>
+              </Button>
+            </>
+          )}
+        </div>
 
-        <button type="button" className="md:hidden" onClick={onOpen}>
+        <Button className="md:hidden" onClick={onOpen}>
           <RxHamburgerMenu />
-        </button>
+        </Button>
       </nav>
+
       <Drawer placement="left" onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
