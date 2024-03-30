@@ -29,25 +29,8 @@ import {
 import { RxHamburgerMenu } from "react-icons/rx";
 import { logOutStart, logOutEnd } from "../redux/user/userSlice";
 import { jwtDecode } from "jwt-decode";
-
-const links = [
-  {
-    label: "Home",
-    path: "/",
-  },
-  {
-    label: "Listings",
-    path: "/listings",
-  },
-  {
-    label: "Services",
-    path: "/services",
-  },
-  {
-    label: "About",
-    path: "/about",
-  },
-];
+import { navLinks } from "@/constants";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -70,16 +53,18 @@ const Navbar = () => {
   };
 
   return (
-    <header className="py-4 bg-[#223f39] text-white">
+    <header className="py-4 bg-mainColor text-white">
       <nav className="container flex items-center justify-between ">
-        <Link to={"/"}>Logo</Link>
-        <ul className="hidden md:flex items-center gap-4">
-          {links.map((link, i) => (
-            <Link key={i} to={link.path}>
-              {link.label}
-            </Link>
-          ))}
-        </ul>
+        <div className="flex items-center  gap-12">
+          <Link to={"/"}>Logo</Link>
+          <ul className="hidden md:flex items-center gap-4">
+            {navLinks.map((link, i) => (
+              <Link key={i} to={link.path}>
+                {link.label}
+              </Link>
+            ))}
+          </ul>
+        </div>
 
         {currentUser ? (
           <div className="flex  items-center">
@@ -96,9 +81,9 @@ const Navbar = () => {
           </div>
         ) : (
           <div>
-            <button className="p-2 px-4">
+            <Button className="">
               <Link to={"/login"}>Log In</Link>
-            </button>
+            </Button>
             <button className="p-2 px-4">
               <Link to={"/register"}>Sign Up</Link>
             </button>
@@ -121,7 +106,7 @@ const Navbar = () => {
           <DrawerHeader borderBottomWidth="1px">Basic Drawer </DrawerHeader>
           <DrawerBody className="">
             <ul className="flex flex-col items-center gap-4">
-              {links.map((link, i) => (
+              {navLinks.map((link, i) => (
                 <Link key={i} to={link.path}>
                   {link.label}
                 </Link>

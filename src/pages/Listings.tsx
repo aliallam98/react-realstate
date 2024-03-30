@@ -91,8 +91,7 @@ const FilteringMenu = () => {
     fetchListing();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search,filteringData.page]);
-
+  }, [location.search, filteringData.page]);
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = e.target;
@@ -163,14 +162,14 @@ const FilteringMenu = () => {
   // };
   return (
     <section className="relative p-4">
-      <h3 className="text-2xl font-semibold text-center my-6">
+      <h3 className="text-2xl md:text-3xl lg:text-5xl font-semibold text-center mb-10 mt-5">
         Find Your Dream Home
       </h3>
-      <div className="flex gap-10">
+      <div className="flex flex-col lg:flex-row gap-10">
         <form
           ref={formRef}
-          className={`flex flex-col gap-4 p-4 max-w-[300px]  h-[600px] shadow-md border relative  ${
-            isOpen ? "w-[300px]" : "w-16"
+          className={`relative flex flex-col gap-4 p-4 shadow-md border max-w-[300px] h-fit lg:h-[550px]   ${
+            isOpen ? "mx-auto lg:w-[300px]" : "ml-5 w-fit lg:w-16"
           } `}
           onSubmit={onSubmitHandler}
         >
@@ -274,18 +273,18 @@ const FilteringMenu = () => {
                 </select>
               </div>
               <Button
-                className="block w-[80%] mx-auto py-2 px-4 hover:scale-110 transition-transform border border-neutral-200 mt-4"
+                className="block w-full mx-auto py-2 px-4 hover:scale-110 transition-transform border border-neutral-200 mt-4"
                 title="Search"
               />
             </>
           )}
         </form>
 
-        <div className="grid grow justify-center grid-cols-[repeat(auto-fill,minmax(270px,300px))] gap-4">
-          {loading ? (
-            <LoadingComponent />
-          ) : (
-            listings.map((listing) => (
+        {loading ? (
+          <LoadingComponent />
+        ) : (
+          <div className="grid grow justify-center grid-cols-[repeat(auto-fill,minmax(270px,300px))] gap-4">
+            {listings.map((listing) => (
               <Link
                 key={listing._id}
                 to={`/listing/${listing._id}`}
@@ -299,9 +298,9 @@ const FilteringMenu = () => {
                   description={listing.description}
                 />
               </Link>
-            ))
-          )}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
       <Pagination
         page={filteringData.page}

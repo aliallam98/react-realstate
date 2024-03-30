@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { IListing } from "../types";
+import { Skeleton } from "./ui/skeleton";
 
 const Card = ({ address, price, images, description }: IListing) => {
   return (
@@ -44,3 +45,16 @@ const Card = ({ address, price, images, description }: IListing) => {
 };
 
 export default Card;
+
+Card.Skeleton = function CardSkeleton() {
+  return (
+    <div className="flex flex-col space-y-3">
+      <Skeleton className="h-[200px] w-[250px] rounded-xl bg-black/10" />
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-[250px] bg-black/10" />
+        <Skeleton className="h-4 w-[250px] bg-black/10" />
+        <Skeleton className="h-4 w-[200px] bg-black/10" />
+      </div>
+    </div>
+  );
+};

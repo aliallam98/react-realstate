@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface IProps {
   page: string | number;
@@ -24,6 +23,7 @@ const Pagination = ({
   return (
     <div className="flex justify-center items-center gap-x-10 mt-10">
       <button
+        className="py-2 px-6 border rounded-md disabled:bg-neutral-200"
         onClick={() => onClickHandler("prev")}
         disabled={Number(page) <= 1}
       >
@@ -33,6 +33,7 @@ const Pagination = ({
         {page} OF {totalPages}
       </p>
       <button
+        className="py-2 px-6 border rounded-md disabled:bg-neutral-200"
         onClick={() => onClickHandler("next")}
         disabled={Number(page) >= Number(totalPages)}
       >

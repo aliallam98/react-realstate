@@ -112,7 +112,7 @@ const Profile = () => {
         Hello, {currentUser.userName}
       </h3>
       <img
-        className="w-20 h-20 rounded-full mx-auto my-4 object-contain"
+        className="w-32 h-32 rounded-full mx-auto my-4 object-contain  shadow-md"
         src={
           formData?.profileImage?.downloadURL ||
           currentUser.profileImage?.downloadURL
@@ -177,7 +177,7 @@ const Profile = () => {
 
         <button
           type="submit"
-          className="block py-2   w-full  md:w-[500px]   mx-auto border border-[#223f39]  rounded-3xl"
+          className="block py-2   w-full  md:w-[500px]   mx-auto border bg-secondColor border-secondColor rounded-3xl"
           disabled={loading}
         >
           {loading ? <BeatLoader size={10} margin={1} /> : "Save"}

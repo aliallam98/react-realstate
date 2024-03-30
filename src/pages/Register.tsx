@@ -1,89 +1,139 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BeatLoader } from "react-spinners";
-import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+import { z } from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { registerFormSchema } from "@/schemas";
+import toast from "react-hot-toast";
+
 function Register() {
-  const [error, setError] = useState("");
-  const [loading, setIsLoading] = useState(false);
-  const [userData, setUserData] = useState({
-    userName: "",
-    email: "",
-    password: "",
-  });
+  const [isLoading, setIsLoading] = useState(false);
+
   const navigate = useNavigate();
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
+  const form = useForm<z.infer<typeof registerFormSchema>>({
+    resolver: zodResolver(registerFormSchema),
+    defaultValues: {
+      userName: "",
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleOnSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault();
+  async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     setIsLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    axios
-      .post("http://localhost:5000/api/auth/signup", userData)
-      .then(() => {
-        navigate("/login");
+
+    await axios
+      .post("http://localhost:5000/api/auth/signup", values)
+      .then((res) => {
+        res.data.success ? navigate("/login") : toast.error(res.data.message);
       })
       .catch((error: any) => {
-        setError(error.response.data.message);
+        toast.error(error.response.data.message);
       })
       .finally(() => {
         setIsLoading(false);
       });
-  };
+  }
+
+  // const [userData, setUserData] = useState({
+  //   userName: "",
+  //   email: "",
+  //   password: "",
+  // });
+
+  // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setUserData({ ...userData, [name]: value });
+  // };
 
   return (
     <>
-      <div className="h-screen flex justify-center p-10 ">
-        <form
-          className="flex flex-col w-[400px] shadow-lg p-10 h-fit mt-20 space-y-4"
-          onSubmit={handleOnSubmit}
-        >
-          <p className="text-center font-medium mb-4">Sign up to continue</p>
-          {error && (
-            <p className="text-center font-medium mb-4 text-red-400">{error}</p>
-          )}
-          <input
-            className="p-2 border border-gray-400 outline-none disabled:bg-transparent/10"
-            type="text"
-            name="userName"
-            placeholder="Enter Your username"
-            onChange={onChangeHandler}
-            disabled={loading}
-          />
-          <input
-            className="p-2 border border-gray-400 outline-none disabled:bg-transparent/10"
-            type="text"
-            name="email"
-            placeholder="Enter Your Email"
-            onChange={onChangeHandler}
-            disabled={loading}
-          />
-          <input
-            className="p-2 border border-gray-400 outline-none disabled:bg-transparent/10"
-            type="password"
-            name="password"
-            placeholder="Password"
-            onChange={onChangeHandler}
-            disabled={loading}
-          />
-          <p className="text-xs my-4">
-            By signing up, I accept the Atlassian Cloud Terms of Service and
-            acknowledge the Privacy Policy.
-          </p>
-          <button
-            className="p-2 border border-neutral-200 shadow-md"
-            onClick={handleOnSubmit}
-            disabled={loading}
+      <section className="h-screen flex flex-col items-center justify-center p-10 ">
+        <div>
+          <h1 className="text-center text-3xl mb-2">Join ....</h1>
+          <p className="text-center">Sign up to continue</p>
+        </div>{" "}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-96 space-y-4  p-4 "
           >
-            {loading ? <BeatLoader size={10} margin={1} /> : "Sign Up "}
-          </button>
-        </form>
-      </div>
+            <FormField
+              control={form.control}
+              name="userName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Username"
+                      {...field}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter Your Email"
+                      {...field}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Password"
+                      {...field}
+                      disabled={isLoading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              Submit
+            </Button>
+          </form>
+        </Form>
+      </section>
     </>
   );
 }
