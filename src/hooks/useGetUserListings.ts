@@ -10,7 +10,7 @@ const useGetAllListings = () => {
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`http://localhost:5000/api/user`)
+      .get(`http://localhost:5000/api/user/listings`)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .then((res: any) => {
         setListings(res.data.results);
@@ -21,7 +21,7 @@ const useGetAllListings = () => {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [listings]);
+  }, []);
   return {
     isLoading,
     listings,
