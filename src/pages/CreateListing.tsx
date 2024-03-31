@@ -5,9 +5,12 @@ import * as yup from "yup";
 import Input from "../components/Input";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { useState } from "react";
+import { ElementRef, useRef, useState } from "react";
 import { PulseLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { cn, convertFileToUrl } from "@/lib/utils";
+import { FaX } from "react-icons/fa6";
 
 // const dataInputs = [
 //   "name",
@@ -54,7 +57,7 @@ const schema = yup
 // }
 
 const CreateListing = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -64,11 +67,53 @@ const CreateListing = () => {
     resolver: yupResolver(schema),
   });
 
+  const [files, setFiles] = useState<File[] | null>([]);
+  const [fileError, setFileError] = useState("");
+  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+
+  // const useQuery = useQueryClient();
+
+  const fileRef = useRef<ElementRef<"input">>(null);
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedFiles = event.target.files;
+    if (!selectedFiles) return;
+
+    if (selectedFiles.length > 6) {
+      toast.error("Maximum Images Is 6 ");
+      return;
+    }
+
+    try {
+      const newImagesPreview = (await Promise.all(
+        Array.from(selectedFiles).map(async (file) => {
+          if (!file.type.startsWith("image")) {
+            setFileError("Invalid file type. Only images are allowed.");
+            return;
+          }
+          const url = await convertFileToUrl(file);
+          return url;
+        })
+      )) as string[];
+      setImagesPreview([...imagesPreview, ...newImagesPreview]);
+      setFiles([...(files ?? []), ...selectedFiles]);
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      setFileError("An error occurred while uploading files.");
+    }
+  };
+
+  const removeImage = (index: number) => {
+    setImagesPreview((prevImages) => prevImages?.filter((_, i) => i !== index));
+    setFiles((prevFiles) => prevFiles?.filter((_, i) => i !== index) ?? []);
+  };
+
   const formData = new FormData();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
-
     setLoading(true);
     for (const key in data) {
       if (key === "images") {
@@ -94,7 +139,7 @@ const CreateListing = () => {
       .then((res) => {
         if (res.data.success) {
           toast.success("Successfully Created");
-          navigate(`/listing/${res.data.results._id}`)
+          navigate(`/listing/${res.data.results._id}`);
         } else {
           toast.error(res.data.message);
         }
@@ -240,7 +285,63 @@ const CreateListing = () => {
           />
         </div>
 
-        {/* Upload Files */}
+        {/* File */}
+        <div>
+          <div className="flex gap-2 justify-center py-5">
+            {files?.length !== 6 && (
+              <div className="relative w-[150px] h-[150px]  border rounded-md flex justify-center items-center  bg-cover bg-no-repeat bg-center">
+                <Button
+                  onClick={() => fileRef?.current?.click()}
+                  type="button"
+                  variant={"ghost"}
+                  size={"sm"}
+                >
+                  Upload Images
+                </Button>
+                <input
+                  multiple
+                  {...register("images")}
+                  ref={fileRef}
+                  id="images"
+                  className="absolute w-full h-full hidden"
+                  disabled={loading}
+                  placeholder="File"
+                  type="file"
+                  onChange={handleFileChange}
+                />
+              </div>
+            )}
+            {imagesPreview?.map((item, i) => (
+              <div
+                key={i}
+                className="relative w-[150px] h-[150px] border rounded-md  bg-cover bg-no-repeat bg-center"
+                style={{ backgroundImage: `url(${item || ""})` }}
+              >
+                <Button
+                  className={cn(
+                    "absolute top-1 right-1 h-fit p-2 hidden hover:bg-transparent ",
+                    item && "block"
+                  )}
+                  type="button"
+                  variant={"ghost"}
+                  onClick={() => removeImage(i)}
+                >
+                  <FaX />
+                </Button>
+              </div>
+            ))}
+          </div>
+          <p
+            className={cn(
+              "hidden text-sm font-semibold text-red-600",
+              fileError.length > 0 && "block"
+            )}
+          >
+            {fileError}
+          </p>
+        </div>
+
+        {/* Upload Files
         <div>
           <input
             type="file"
@@ -251,15 +352,15 @@ const CreateListing = () => {
             disabled={loading}
           />
           {/* <p>{errors.images?.message} </p> */}
-        </div>
+        {/* </div> */} 
 
-          <button
-            className="block mx-auto py-2 px-4 border border-neutral-200 hover:scale-110 transition-transform"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? <PulseLoader />: "Create"}
-          </button>
+        <button
+          className="block mx-auto py-2 px-4 border border-neutral-200 hover:scale-110 transition-transform"
+          type="submit"
+          disabled={loading}
+        >
+          {loading ? <PulseLoader /> : "Create"}
+        </button>
       </form>
     </section>
   );
