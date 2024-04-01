@@ -26,8 +26,6 @@ import toast from "react-hot-toast";
 import useGetAllListings from "../hooks/useGetUserListings";
 import { IListing } from "../types";
 
-
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleDelete = (row: any) => {
   axios
@@ -81,10 +79,10 @@ const columns: Column<IListing>[] = [
 ];
 
 const MyListings = () => {
-  const {isLoading,listings} = useGetAllListings()
+  const { isLoading, listings } = useGetAllListings();
 
+  console.log("listings", listings);
 
-  
   const data: IListing[] = useMemo(() => listings, [listings]);
   const {
     getTableProps,
@@ -109,6 +107,7 @@ const MyListings = () => {
   if (!listings && isLoading) {
     return <LoadingComponent />;
   }
+
   return (
     <section className="p-10 text-center">
       <div className="container h-full p-5 shadow-md border border-neutral-200">

@@ -352,7 +352,7 @@ const CreateListing = () => {
             disabled={loading}
           />
           {/* <p>{errors.images?.message} </p> */}
-        {/* </div> */} 
+        {/* </div> */}
 
         <button
           className="block mx-auto py-2 px-4 border border-neutral-200 hover:scale-110 transition-transform"

@@ -25,6 +25,7 @@ import {
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
+  DrawerFooter,
 } from "@chakra-ui/react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { logOutStart, logOutEnd } from "../redux/user/userSlice";
@@ -81,7 +82,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button>
+              <Button className="bg-secondColor/20 hover:bg-secondColor/10">
                 <Link to={"/login"}>Log In</Link>
               </Button>
               <Button>
@@ -91,7 +92,7 @@ const Navbar = () => {
           )}
         </div>
 
-        <Button className="md:hidden" onClick={onOpen}>
+        <Button className="md:hidden" variant={"ghost"} onClick={onOpen}>
           <RxHamburgerMenu />
         </Button>
       </nav>
@@ -105,16 +106,44 @@ const Navbar = () => {
           >
             <GrClose />
           </button>
-          <DrawerHeader borderBottomWidth="1px">Basic Drawer </DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">Welcome</DrawerHeader>
           <DrawerBody className="">
-            <ul className="flex flex-col items-center gap-4">
+            <ul className="flex flex-col items-center gap-4 mt-6">
               {navLinks.map((link, i) => (
-                <Link key={i} to={link.path}>
+                <Link key={i} to={link.path} className="text-xl">
                   {link.label}
                 </Link>
               ))}
             </ul>
           </DrawerBody>
+          <DrawerFooter className="flex flex-col gap-4">
+            {currentUser ? (
+              <>
+                <Button
+                  asChild
+                  className="bg-secondColor text-black hover:bg-secondColor/80 w-full"
+                >
+                  <Link to={"/profile"}>{currentUser.userName}</Link>
+                </Button>
+                <Button
+                  onClick={onClickHandler}
+                  disabled={loading}
+                  className="w-full"
+                >
+                  Log Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button className="w-full">
+                  <Link to={"/login"}>Log In</Link>
+                </Button>
+                <Button className="w-full">
+                  <Link to={"/register"}>Sign Up</Link>
+                </Button>
+              </>
+            )}
+          </DrawerFooter>
         </DrawerContent>
       </Drawer>
     </header>

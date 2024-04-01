@@ -122,42 +122,46 @@ const Profile = () => {
   }, [file]);
 
   return (
-    <section className="py-20 px-5">
-      <h3 className="text-center text-4xl mb-6 capitalize">
-        Hello, {currentUser.userName}
-      </h3>
+    <section className="pb-20 ">
+      <div className="relative bg-secondColor h-[200px] py-6">
+        <h3 className="text-center text-4xl mb-6 capitalize">
+          Hello, {currentUser.userName}
+        </h3>
 
-      {/* Image */}
-      <img
-        className="w-40 h-40 rounded-full mx-auto my-4 object-contain  shadow-md"
-        src={
-          currentUser.profileImage?.downloadURL //formData?.profileImage?.downloadURL ||
-        }
-        alt="profileImage"
-        onClick={() => fileRef?.current?.click()}
-      />
-      {error && <p className="text-center text-red-600">{error}</p>}
-      <div
-        className={`text-center ${
-          fileUploadError ? "text-red-600" : "text-green-600"
-        }`}
-      >
-        {fileUploadError ? (
-          <p>There Is Something Wrong With uploading Image</p>
-        ) : filePres > 0 && filePres < 100 ? (
-          <p>{`Uploading .. ${filePres}%`}</p>
-        ) : filePres === 100 ? (
-          <p>Uploaded ..</p>
-        ) : (
-          ""
-        )}
+        {/* Image */}
+        <div className="absolute -bottom-20 left-1/2 -translate-x-1/2">
+          <img
+            className="w-40 h-40 rounded-full mx-auto my-4 object-contain   shadow-md bg-white"
+            src={
+              currentUser.profileImage?.downloadURL //formData?.profileImage?.downloadURL ||
+            }
+            alt="profileImage"
+            onClick={() => fileRef?.current?.click()}
+          />
+          {error && <p className="text-center text-red-600">{error}</p>}
+          <div
+            className={`text-center ${
+              fileUploadError ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {fileUploadError ? (
+              <p>There Is Something Wrong With uploading Image</p>
+            ) : filePres > 0 && filePres < 100 ? (
+              <p>{`Uploading .. ${filePres}%`}</p>
+            ) : filePres === 100 ? (
+              <p>Uploaded ..</p>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+        {/* End Image */}
       </div>
-      {/* End Image */}
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="max-w-lg space-y-4  p-4 mx-auto "
+          className="max-w-lg space-y-4 p-4 mx-auto mt-10"
         >
           <input
             type="file"

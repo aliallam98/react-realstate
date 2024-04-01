@@ -41,11 +41,14 @@ const Listing = () => {
       to={image.secure_url}
       className="h-fit"
     >
-      <img src={image.secure_url} className="w-[300px] h-[200px] bg-cover" />
+      <img
+        src={image.secure_url}
+        className=" w-[200px] h-[80px] lg:w-[300px] lg:h-[200px] bg-cover"
+      />
     </Link>
   ));
   return (
-    <section className="p-10">
+    <section className="py-10">
       {loading ? (
         <LoadingComponent />
       ) : (
@@ -68,19 +71,18 @@ const Listing = () => {
             }}
           >
             <div className="w-full h-full flex flex-wrap justify-center gap-5">
-              <div className="w-full h-[500px]]">
+              <div>
                 <Link
                   data-fancybox="gallery"
                   to={listing?.images?.[0].secure_url as string}
-                  className="mx-auto"
+                  className="w-fit"
                 >
                   <img
                     src={listing?.images?.[0].secure_url}
-                    className="h-[500px] object-cover mx-auto"
+                    className="w-[800px] object-cover mx-auto"
                   />
                 </Link>
               </div>
-
               <div className="flex gap-5 rounded-md">
                 {renderImages?.slice(1, 5)}
               </div>
