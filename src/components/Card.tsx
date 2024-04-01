@@ -1,4 +1,4 @@
-import { FaRegHeart } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 // Import Swiper React components
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,10 +10,14 @@ import { IListing } from "../types";
 import { Skeleton } from "./ui/skeleton";
 
 const Card = ({ address, price, images, description }: IListing) => {
+  //Check if exist in favorites
+
+  //Todo
+  // const isAddedToFavorites =
   return (
     <article className="relative border border-neutral-200  rounded-3xl overflow-hidden shadow-md h-[415px] max-w-[400px] mx-auto">
-      <FaRegHeart
-        className="absolute top-4 right-4 cursor-pointer z-10 "
+      <FaHeart
+        className="absolute top-4 right-4 cursor-pointer z-10 text-white"
         size={20}
       />
       <Swiper

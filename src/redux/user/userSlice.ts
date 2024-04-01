@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
 
 export interface userState {
   token: string;
@@ -23,7 +24,8 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     signInSuccess: (state, action: PayloadAction<null>) => {
-      state.currentUser = action.payload;
+      state.token = action.payload!;
+      state.currentUser = jwtDecode(action.payload!);
       state.loading = false;
       state.error = null;
     },

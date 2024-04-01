@@ -21,7 +21,7 @@ import {
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { loginFormSchema } from "@/schemas";
@@ -41,7 +41,7 @@ function Login() {
   //   setUserData({ ...userData, [name]: value });
   // };
 
-  const { loading, currentUser } = useSelector(
+  const { loading} = useSelector(
     (state: RootState) => state.user
   );
   const dispatch = useDispatch();
@@ -63,7 +63,7 @@ function Login() {
     await axios
       .post("http://localhost:5000/api/auth/login", values)
       .then((res) => {
-        dispatch(signInSuccess(res.data.payload));
+        dispatch(signInSuccess(res.data.token));
         // localStorage.setItem("realEstate-Auth", res.data.payload);
         navigate("/");
       })
@@ -75,9 +75,9 @@ function Login() {
 
   return (
     <>
-      {currentUser ? (
+      {/* {currentUser ? (
         <Navigate to={"/"} />
-      ) : (
+      ) : ( */}
         <section className="h-screen py-10">
           <div className="container h-full  flex flex-col justify-center items-center gap-10">
             <div>
@@ -132,7 +132,7 @@ function Login() {
             </Form>
           </div>
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }

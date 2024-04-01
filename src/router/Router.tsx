@@ -8,18 +8,36 @@ import CreateListing from "../pages/CreateListing";
 import Listing from "../pages/Listing";
 import UserListings from "../pages/MyListings";
 import Listings from "../pages/Listings";
-import EditListing from '../pages/EditListing'
+import EditListing from "../pages/EditListing";
 import Services from "../pages/Services";
 import About from "../pages/About";
-import ProtectedRoute from "../components/ProtectedRoute";
+import AuthMiddleware from "@/components/AuthMiddleware";
 
+/**
+ * An array of routes that are accessible to the public
+ * These routes do not require authentication
+ * @type {string[]}
+ */
+export const publicRoutes = [
+  "/",
+  "/about",
+  "/services",
+  "/listings",
+  "/listings/:id",
+];
 
+/**
+ * An array of routes that are used for authentication
+ * These routes will redirect logged in users to /settings
+ * @type {string[]}
+ */
+export const authRoutes = ["/login", "/register"];
 
-
-
-
-
-
+/**
+ * The default redirect path after logging in
+ * @type {string}
+ */
+export const DEFAULT_LOGIN_REDIRECT = "/";
 
 const router = createBrowserRouter([
   {
@@ -40,29 +58,51 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <AuthMiddleware>
+            <Login />
+          </AuthMiddleware>
+        ),
       },
       {
         path: "/register",
-        element: <Register />,
+        element: (
+          <AuthMiddleware>
+            <Register />
+          </AuthMiddleware>
+        ),
       },
       {
         path: "/profile",
-        element: <ProtectedRoute><Profile /></ProtectedRoute>,
+        element: (
+          <AuthMiddleware>
+            <Profile />
+          </AuthMiddleware>
+        ),
       },
       {
         path: "/create-list",
-        element: <ProtectedRoute><CreateListing /></ProtectedRoute>,
-
+        element: (
+          <AuthMiddleware>
+            <CreateListing />
+          </AuthMiddleware>
+        ),
       },
       {
         path: "/edit-listing/:id",
-        element: <ProtectedRoute><EditListing/></ProtectedRoute>,
-
+        element: (
+          <AuthMiddleware>
+            <EditListing />
+          </AuthMiddleware>
+        ),
       },
       {
         path: "/my-listings",
-        element: <ProtectedRoute><UserListings /></ProtectedRoute>,
+        element: (
+          <AuthMiddleware>
+            <UserListings />
+          </AuthMiddleware>
+        ),
       },
       {
         path: "/listing/:id",
