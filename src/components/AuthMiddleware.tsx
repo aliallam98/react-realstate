@@ -23,7 +23,7 @@ interface IProps {
 const AuthMiddleware = ({ children }: IProps) => {
   const { pathname } = useLocation();
 
-  const { loading, currentUser } = useSelector(
+  const { loading, currentUser, token } = useSelector(
     (state: RootState) => state.user
   );
 
@@ -38,14 +38,48 @@ const AuthMiddleware = ({ children }: IProps) => {
   console.log(isAuthRoute);
 
   let expirationTime = 0;
-  const token: string | null = localStorage.getItem("token") || null;
-  if (token) {
-    const decoded: Decoded = jwtDecode(token) || null; // Explicitly type 'JwtPayload'
-    console.log(decoded);
-    decoded ? (expirationTime = decoded?.exp * 1000) : 0; // Use optional chaining to avoid accessing '.exp' on undefined
-    const currentTime = Date.now();
-    // return token && currentTime > expirationTime ? <Navigate to='/login' /> : children;
-  }
+  // const token: string | null = localStorage.getItem("token") || null;
+  console.log(token);
+
+  // Improved token expiration check with optional chaining:
+  // if (token) {
+  //   const decoded: Decoded = jwtDecode(token) || null; // Explicitly type 'Decoded'
+  //   const currentTime = Date.now();
+
+  //   if (decoded) {
+  //     expirationTime = decoded.exp * 1000;
+
+  //     // Check if token is expired:
+  //     if (currentTime > expirationTime) {
+  //       // Handle expired token:
+  //       const handleExpiredToken = async () => {
+  //         try {
+  //           const response = await fetch(refreshTokenEndpoint, {
+  //             method: "POST",
+  //             // Include any necessary headers or body for refresh logic
+  //           });
+
+  //           if (response.ok) {
+  //             const newToken = await response.json();
+  //             localStorage.setItem("token", newToken);
+  //             // Optional: Update redux state with new token information
+  //             return children; // Allow access after successful refresh
+  //           } else {
+  //             // Handle refresh error (e.g., redirect to login)
+  //             return <Navigate to={"/login"} />;
+  //           }
+  //         } catch (error) {
+  //           console.error("Error refreshing token:", error);
+  //           // Handle refresh error gracefully (e.g., redirect to login)
+  //           return <Navigate to={"/login"} />;
+  //         }
+  //       };
+
+  //       // Call the asynchronous token refresh handler:
+  //       return handleExpiredToken();
+  //     }
+  //   }
+  // }
 
   if (isAuthRoute) {
     if (isLoggedIn) {
@@ -58,7 +92,7 @@ const AuthMiddleware = ({ children }: IProps) => {
     return <Navigate to={"/login"} />;
   }
 
-  return children
+  return children;
 };
 
 export default AuthMiddleware;

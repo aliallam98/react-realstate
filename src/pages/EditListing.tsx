@@ -1,16 +1,15 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import Input from '../components/Input'
+import Input from "../components/Input";
 import axios from "axios";
-import toast , { Toaster } from "react-hot-toast";
-import {ElementRef, useEffect, useRef, useState } from "react";
-import {PulseLoader} from 'react-spinners'
-import { useParams } from 'react-router-dom';
+import toast, { Toaster } from "react-hot-toast";
+import { ElementRef, useEffect, useRef, useState } from "react";
+import { PulseLoader } from "react-spinners";
+import { useParams } from "react-router-dom";
 import { FaX } from "react-icons/fa6";
 import { Button } from "@/components/ui/button";
 import { cn, convertFileToUrl } from "@/lib/utils";
-
 
 // const dataInputs = [
 //   "name",
@@ -22,7 +21,7 @@ import { cn, convertFileToUrl } from "@/lib/utils";
 //   "price",
 //   "sell-rent",
 // ];
-  const schema = yup
+const schema = yup
   .object({
     title: yup
       .string()
@@ -59,38 +58,35 @@ import { cn, convertFileToUrl } from "@/lib/utils";
     furnished: yup.boolean().optional(),
     parking: yup.boolean().optional(),
     // // features: yup.string().required(), // Add validation logic for features if needed
-    images: yup.mixed().optional()
+    images: yup.mixed().optional(),
   })
   .required();
 // type FormData = yup.InferType<typeof schema>;
 
-
-interface image{
-  secure_url:string
-  public_id:string
+interface image {
+  secure_url: string;
+  public_id: string;
 }
 interface IListing {
-  title : string
-  slug : string
-  description : string
-  address : string
-  price : number
-  bathrooms : number
-  bedrooms : number
-  furnished : boolean
-  parking : boolean
-  purpose : string
-  images : image[]
+  title: string;
+  slug: string;
+  description: string;
+  address: string;
+  price: number;
+  bathrooms: number;
+  bedrooms: number;
+  furnished: boolean;
+  parking: boolean;
+  purpose: string;
+  images: image[];
 }
 
-
 const EditListing = () => {
-  const [loading,setLoading] = useState(false)
-  const [listing,setListing] = useState<IListing>()
-  
-  const {id} = useParams()
+  const [loading, setLoading] = useState(false);
+  const [listing, setListing] = useState<IListing>();
 
-  
+  const { id } = useParams();
+
   const [files, setFiles] = useState<File[] | null>([]);
   const [fileError, setFileError] = useState("");
   const [imagesPreview, setImagesPreview] = useState<string[]>([]);
@@ -134,16 +130,19 @@ const EditListing = () => {
     setFiles((prevFiles) => prevFiles?.filter((_, i) => i !== index) ?? []);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true);
-        axios.get(`http://localhost:5000/api/listing/${id}`).then((res)=>{
-          setListing(res.data.isListingExist)
-          setLoading(false);
-        }).catch((error)=>{
-          toast.error(error.message);
-          setLoading(false);
-        })
-    },[id])
+    axios
+      .get(`http://localhost:5000/api/listing/${id}`)
+      .then((res) => {
+        setListing(res.data.isListingExist);
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        setLoading(false);
+      });
+  }, [id]);
 
   const {
     register,
@@ -151,23 +150,23 @@ const EditListing = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    values:{
+    values: {
       title: listing?.title || "",
       description: listing?.description || "",
       address: listing?.address || "",
       bedrooms: listing?.bedrooms,
-      bathrooms: listing?.bathrooms ,
-      price: listing?.price ,
+      bathrooms: listing?.bathrooms,
+      price: listing?.price,
       purpose: listing?.purpose || "",
       furnished: listing?.furnished,
-    }
+    },
   });
 
-  const formData  = new FormData()
+  const formData = new FormData();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
-    setLoading(true)
+    setLoading(true);
     for (const key in data) {
       if (key === "images" && data.images.length > 0) {
         const images = data[key];
@@ -175,7 +174,7 @@ const EditListing = () => {
           formData.append("images", image);
         }
       } else {
-        formData.delete("images")
+        formData.delete("images");
       }
       formData.append(key, data[key]);
     }
@@ -190,61 +189,118 @@ const EditListing = () => {
     // formData.append('furnished',data.furnished)
     // formData.append('images',data.images)
 
-    axios.put(`http://localhost:5000/api/listing/${id}`,formData).then((res)=>{
-      console.log(res);
-      
-      if(res.data.success){
-         toast.success('Successfully Updated')
-        setLoading(false)
-      }else{
-        toast.error("SomeThing Went Wrong !")
-      setLoading(false)
-      }
-    }).catch((err)=>{
-      toast.error(err.message)
-      setLoading(false)
-    })
+    axios
+      .put(`http://localhost:5000/api/listing/${id}`, formData)
+      .then((res) => {
+        console.log(res);
 
+        if (res.data.success) {
+          toast.success("Successfully Updated");
+          setLoading(false);
+        } else {
+          toast.error("SomeThing Went Wrong !");
+          setLoading(false);
+        }
+      })
+      .catch((err) => {
+        toast.error(err.message);
+        setLoading(false);
+      });
   };
 
   return (
     <section className="p-10">
       <h2 className="text-center text-2xl font-medium mb-4">Create Listing</h2>
-      <Toaster/>
+      <Toaster />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-lg mx-auto space-y-4"
       >
         {/* Title Input */}
-        <Input {...register("title")} name="title" type="text"  disabled={loading}  /> 
-          {errors.title?.message && <span className=" text-red-600 text-sm select-none">{errors.title?.message}</span>}
+        <Input
+          {...register("title")}
+          name="title"
+          type="text"
+          disabled={loading}
+        />
+        {errors.title?.message && (
+          <span className=" text-red-600 text-sm select-none">
+            {errors.title?.message}
+          </span>
+        )}
         {/* Address Input */}
-          <Input {...register("address")} name="address" type="text"  disabled={loading} />
-          {errors.address?.message && <span className=" text-red-600 text-sm select-none">{errors.address?.message}</span>}
+        <Input
+          {...register("address")}
+          name="address"
+          type="text"
+          disabled={loading}
+        />
+        {errors.address?.message && (
+          <span className=" text-red-600 text-sm select-none">
+            {errors.address?.message}
+          </span>
+        )}
         <div className="flex flex-col sm:flex-row  flex-wrap  justify-between gap-4">
-        {/* Bedrooms Input */}
-        <Input {...register("bedrooms")} name="bedrooms" type="text" disabled={loading} />
-        {errors.bedrooms?.message && <span className=" text-red-600 text-sm select-none">{errors.bedrooms?.message}</span>}
-        {/* Bathrooms Input */}
-        <Input {...register("bathrooms")} name="bathrooms" type="text" disabled={loading} />
-        {errors.bathrooms?.message && <span className=" text-red-600 text-sm select-none">{errors.bathrooms?.message}</span>}
-        {/* Price Input */}
-        <Input {...register("price")} name="price" type="text" disabled={loading} />
-        {errors.price?.message && <span className=" text-red-600 text-sm select-none">{errors.price?.message}</span>}
-        {/* Purpose Select */}
-        <div className="relative">
-         <select id="purpose"
-         disabled={loading}
-          className="block w-[230px] border border-neutral-200 p-2"
-          {...register("purpose")}
-          >
-            <option value="">Select</option>
-            <option value="For Rent">For Rent</option>
-            <option value="For Sale">For Sale</option>
-          </select>
-          <label htmlFor="purpose" className="capitalize absolute left-6 -top-[14px] bg-white border-x-4 border-white">Purpose</label>
-          {errors.purpose?.message && <span className=" left-0 text-red-600 text-sm select-none">This field is required</span>}
-         </div>
+          {/* Bedrooms Input */}
+          <Input
+            {...register("bedrooms")}
+            name="bedrooms"
+            type="text"
+            disabled={loading}
+          />
+          {errors.bedrooms?.message && (
+            <span className=" text-red-600 text-sm select-none">
+              {errors.bedrooms?.message}
+            </span>
+          )}
+          {/* Bathrooms Input */}
+          <Input
+            {...register("bathrooms")}
+            name="bathrooms"
+            type="text"
+            disabled={loading}
+          />
+          {errors.bathrooms?.message && (
+            <span className=" text-red-600 text-sm select-none">
+              {errors.bathrooms?.message}
+            </span>
+          )}
+          {/* Price Input */}
+          <Input
+            {...register("price")}
+            name="price"
+            type="text"
+            disabled={loading}
+          />
+          {errors.price?.message && (
+            <span className=" text-red-600 text-sm select-none">
+              {errors.price?.message}
+            </span>
+          )}
+          {/* Purpose Select */}
+          <div className="relative">
+            <select
+              id="purpose"
+              disabled={loading}
+              className="block w-[230px] border border-neutral-200 p-2"
+              {...register("purpose")}
+            >
+              <option value="">Select</option>
+              <option value="For Rent">For Rent</option>
+              <option value="For Sale">For Sale</option>
+            </select>
+            <label
+              htmlFor="purpose"
+              className="capitalize absolute left-6 -top-[14px] bg-white border-x-4 border-white"
+            >
+              Purpose
+            </label>
+            {errors.purpose?.message && (
+              <span className=" left-0 text-red-600 text-sm select-none">
+                This field is required
+              </span>
+            )}
+          </div>
         </div>
         {/* Description Text Area */}
         <div className="relative">
@@ -260,15 +316,24 @@ const EditListing = () => {
           >
             description
           </label>
-          {errors.description?.message && <span className="absolute -bottom-4 left-0 text-red-600 text-sm select-none">{errors.description?.message}</span>}
+          {errors.description?.message && (
+            <span className="absolute -bottom-4 left-0 text-red-600 text-sm select-none">
+              {errors.description?.message}
+            </span>
+          )}
         </div>
         {/* CheckBox */}
         <div className="flex items-center gap-4">
-        <label htmlFor="furnished">Furnished</label>
-        <input type="checkbox" {...register("furnished")} id="furnished" disabled={loading} />
+          <label htmlFor="furnished">Furnished</label>
+          <input
+            type="checkbox"
+            {...register("furnished")}
+            id="furnished"
+            disabled={loading}
+          />
         </div>
-                {/* CheckBox */}
-                <div className="flex items-center gap-4">
+        {/* CheckBox */}
+        <div className="flex items-center gap-4">
           <label htmlFor="parking">Parking</label>
           <input
             type="checkbox"
@@ -277,7 +342,6 @@ const EditListing = () => {
             disabled={loading}
           />
         </div>
-
 
         {/* File */}
         <div>
@@ -335,14 +399,13 @@ const EditListing = () => {
           </p>
         </div>
 
-         {loading ? <PulseLoader/> : <button
-          className="block mx-auto py-2 px-4 border border-neutral-200 hover:scale-110 transition-transform"
+        <Button
+          className="w-full bg-mainColor hover:bg-mainColor/80"
           type="submit"
           disabled={loading}
         >
-          Edit
-        </button>}
-        
+          {loading ? <PulseLoader /> : "Edit"}
+        </Button>
       </form>
     </section>
   );

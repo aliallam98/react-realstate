@@ -57,7 +57,9 @@ const Navbar = () => {
     <header className="py-4 bg-mainColor text-white">
       <nav className="container flex items-center justify-between ">
         <div className="flex items-center  gap-12">
-          <Link to={"/"}>Logo</Link>
+          <Link to={"/"}>
+            <img width={80} height={80} src="/logo.png" />
+          </Link>
           <ul className="hidden md:flex items-center gap-4">
             {navLinks.map((link, i) => (
               <Link key={i} to={link.path}>

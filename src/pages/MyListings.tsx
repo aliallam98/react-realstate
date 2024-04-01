@@ -110,7 +110,7 @@ const MyListings = () => {
 
   return (
     <section className="py-5 md:py-10 text-center">
-      <div className="container h-full shadow-md border border-neutral-200">
+      <div className="container h-full shadow-md border border-neutral-200 py-4">
         <h3 className="text-center text-lg font-semibold">My Listings</h3>
         <div className="flex flex-row flex-wrap justify-center gap-5 mt-4">
           <div className="w-full md:w-[500px]">
