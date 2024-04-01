@@ -27,20 +27,40 @@ const schema = yup
   .object({
     title: yup
       .string()
-      .min(3, "Required And At Least 3 Char and max 25 ")
-      .max(100)
-      .required(),
-    description: yup.string().min(3).max(500).required(),
-    address: yup.string().required(),
-    bedrooms: yup.number().positive().integer().min(1).required(),
-    bathrooms: yup.number().positive().integer().min(1).required(),
-    price: yup.number().positive().required(),
-    purpose: yup.string().required(),
-    // // category: yup.string().required(),
+      .min(3, "Title must be at least 3 characters long.")
+      .max(100, "Title cannot exceed 100 characters.")
+      .required("Title is required."),
+    description: yup
+      .string()
+      .min(3, "Description must be at least 3 characters long.")
+      .max(500, "Description cannot exceed 500 characters.")
+      .required("Description is required."),
+    address: yup.string().required("Address is required."),
+    bedrooms: yup
+      .number()
+      .typeError("Bedrooms must be a number")
+      .positive("Bedrooms must be a positive number.")
+      .integer("Bedrooms must be a whole number.")
+      .min(1, "Bedrooms must be at least 1.")
+      .required("Bedrooms are required."),
+    bathrooms: yup
+      .number()
+      .typeError("bathrooms must be a number")
+      .positive("Bathrooms must be a positive number.")
+      .integer("Bathrooms must be a whole number.")
+      .min(1, "Bathrooms must be at least 1.")
+      .required("Bathrooms are required."),
+    price: yup
+      .number()
+      .typeError("price must be a number")
+      .positive("Price must be a positive number.")
+      .required("Price is required."),
+    purpose: yup.string().required("Purpose is required."),
+    // // category: yup.string().required(), // Add validation logic for category if needed
     furnished: yup.boolean(),
     parking: yup.boolean(),
-    // // features: yup.string().required(),
-    images: yup.mixed().required(),
+    // // features: yup.string().required(), // Add validation logic for features if needed
+    images: yup.mixed().required("Images are required."),
   })
   .required();
 
@@ -70,7 +90,6 @@ const CreateListing = () => {
   const [files, setFiles] = useState<File[] | null>([]);
   const [fileError, setFileError] = useState("");
   const [imagesPreview, setImagesPreview] = useState<string[]>([]);
-  
 
   // const useQuery = useQueryClient();
 
@@ -266,26 +285,27 @@ const CreateListing = () => {
           )}
         </div>
         {/* CheckBox */}
-        <div className="flex items-center gap-4">
-          <label htmlFor="furnished">Furnished</label>
-          <input
-            type="checkbox"
-            {...register("furnished")}
-            id="furnished"
-            disabled={loading}
-          />
-        </div>
-        {/* CheckBox */}
-        <div className="flex items-center gap-4">
-          <label htmlFor="parking">Parking</label>
-          <input
-            type="checkbox"
-            {...register("parking")}
-            id="parking"
-            disabled={loading}
-          />
-        </div>
 
+        <div className="flex gap-6">
+          <div className="flex items-center gap-4">
+            <label htmlFor="furnished">Furnished</label>
+            <input
+              type="checkbox"
+              {...register("furnished")}
+              id="furnished"
+              disabled={loading}
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            <label htmlFor="parking">Parking</label>
+            <input
+              type="checkbox"
+              {...register("parking")}
+              id="parking"
+              disabled={loading}
+            />
+          </div>
+        </div>
         {/* File */}
         <div>
           <div className="flex gap-2 justify-center py-5">
@@ -355,13 +375,13 @@ const CreateListing = () => {
           {/* <p>{errors.images?.message} </p> */}
         {/* </div> */}
 
-        <button
-          className="block mx-auto py-2 px-4 border border-neutral-200 hover:scale-110 transition-transform"
+        <Button
+          className="w-full bg-mainColor hover:bg-mainColor/80"
           type="submit"
           disabled={loading}
         >
           {loading ? <PulseLoader /> : "Create"}
-        </button>
+        </Button>
       </form>
     </section>
   );

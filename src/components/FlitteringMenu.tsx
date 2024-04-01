@@ -146,10 +146,10 @@ any) => {
     <>
       <form
         ref={formRef}
-        className={`relative flex flex-col gap-4 p-4  max-w-[300px] h-fit lg:h-[550px]   ${
+        className={`relative flex flex-col gap-10 p-4  max-w-[300px] h-fit lg:h-[550px]   ${
           isMenuOpen
             ? "mx-auto lg:w-[300px] border shadow-md"
-            : "ml-5 w-fit lg:w-16"
+            : "mr-auto w-fit lg:w-16"
         } `}
         onSubmit={onSubmitHandler}
       >
@@ -176,7 +176,7 @@ any) => {
           )}{" "}
         </Button>
         {isMenuOpen && (
-          <>
+          <div className="hidden lg:block space-y-6">
             <InputWithLabel
               name="searchTerm"
               type="text"
@@ -267,7 +267,7 @@ any) => {
             <Button className="block w-full mx-auto py-2 px-4 hover:scale-110 transition-transform border border-neutral-200 mt-4">
               Search
             </Button>
-          </>
+          </div>
         )}
       </form>
 

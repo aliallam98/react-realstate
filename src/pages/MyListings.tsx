@@ -109,8 +109,8 @@ const MyListings = () => {
   }
 
   return (
-    <section className="p-10 text-center">
-      <div className="container h-full p-5 shadow-md border border-neutral-200">
+    <section className="py-5 md:py-10 text-center">
+      <div className="container h-full shadow-md border border-neutral-200">
         <h3 className="text-center text-lg font-semibold">My Listings</h3>
         <div className="flex flex-row flex-wrap justify-center gap-5 mt-4">
           <div className="w-full md:w-[500px]">
@@ -130,9 +130,9 @@ const MyListings = () => {
 
         {/* Table */}
         {listings.length > 0 ? (
-          <div>
-            <div className="relative p-5">
-              <div className="w-fit absolute right-10 -top-8 border border-neutral-200 p-2">
+          <div className="w-full overflow-x-auto">
+            <div className="relative">
+              <div className="hidden md:block w-fit absolute right-0 -top-0 border border-neutral-200 bg-white p-2 z-10">
                 {/* Select numbers of Records */}
                 <select
                   value={pageSize}
@@ -148,9 +148,9 @@ const MyListings = () => {
               </div>
               <table
                 {...getTableProps}
-                className="table table-striped table-sm border border-neutral-200 table-fixed w-full "
+                className="table table-striped table-sm border border-neutral-200 table-fixed w-full"
               >
-                <thead>
+                <thead className="border-b">
                   {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
@@ -185,7 +185,10 @@ const MyListings = () => {
                       <tr {...row.getRowProps()}>
                         {row.cells.map((cell) => {
                           return (
-                            <td {...cell.getCellProps()}>
+                            <td
+                              {...cell.getCellProps()}
+                              className="py-4 border-b"
+                            >
                               {cell.render("Cell")}
                             </td>
                           );

@@ -19,7 +19,7 @@ const Input = forwardRef(
           {...props}
           defaultValue={defaultValue}
           ref={ref}
-          className={`block w-full pb-1 px-6 pt-3 border  border-gray-400 outline-none disabled:bg-transparent/10 ${className}`}
+          className={`block w-full pb-1 px-6 pt-3 border  border-gray-300 rounded-md outline-none disabled:bg-transparent/10 ${className}`}
           type={type}
           name={name}
           id={name}
