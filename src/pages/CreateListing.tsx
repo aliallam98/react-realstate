@@ -70,6 +70,7 @@ const CreateListing = () => {
   const [files, setFiles] = useState<File[] | null>([]);
   const [fileError, setFileError] = useState("");
   const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+  
 
   // const useQuery = useQueryClient();
 

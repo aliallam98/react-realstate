@@ -30,7 +30,7 @@ const Footer = () => {
     ));
 
   return (
-    <footer className="border-t border-neutral-200  text-white  ">
+    <footer className="border-t border-neutral-200  text-white bg-secondColor py-4">
       <div className="container">
         <div className="flex  items-center justify-around mb-4 pt-4">
           <h3 className="text-gray-800 font-bold">EcoHaven Realty</h3>
