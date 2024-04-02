@@ -1,4 +1,3 @@
-import { FaHeart } from "react-icons/fa";
 // Import Swiper React components
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,43 +7,49 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { IListing } from "../types";
 import { Skeleton } from "./ui/skeleton";
+import AddAndRemoveFromFavorites from "./AddAndRemoveFromFavorites";
+import { Link } from "react-router-dom";
 
-const Card = ({ address, price, images, description }: IListing) => {
-  //Check if exist in favorites
-
-  //Todo
-  // const isAddedToFavorites =
+interface IProps {
+  data: IListing;
+  isAddedToFavorites:boolean
+}
+const Card = ({ data,isAddedToFavorites }: IProps) => {
   return (
-    <article className="relative border border-neutral-200  rounded-3xl overflow-hidden shadow-md h-[415px] max-w-[400px] mx-auto">
-      <FaHeart
-        className="absolute top-4 right-4 cursor-pointer z-10 text-white"
-        size={20}
-      />
-      <Swiper
-        modules={[Navigation, Pagination]}
-        slidesPerView={1}
-        navigation
-        pagination={{ clickable: true }}
-      >
-        {images?.map((ele, i) => (
-          <SwiperSlide key={i}>
-            <img
-              className="h-[300px] object-cover mx-auto "
-              src={ele.secure_url}
-              alt="silder image"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-      <div className="p-2">
-        <div className="flex items-center justify-between">
-          <p>{address}</p>
-          <span>Rate</span>
+    <Link to={`/listing/${data._id}`}>
+      <article className="relative border border-neutral-200  rounded-3xl overflow-hidden shadow-md h-[415px] max-w-[400px] mx-auto">
+        <AddAndRemoveFromFavorites
+          listingId={data._id!}
+          isAddedToFavorites={isAddedToFavorites}
+        />
+        <Swiper
+          modules={[Navigation, Pagination]}
+          slidesPerView={1}
+          navigation
+          pagination={{ clickable: true }}
+        >
+          {data.images?.map((ele, i) => (
+            <SwiperSlide key={i}>
+              <img
+                className="h-[300px] object-cover mx-auto "
+                src={ele.secure_url}
+                alt="silder image"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        <div className="p-2">
+          <div className="flex items-center justify-between">
+            <p>{data.address}</p>
+            <span>Rate</span>
+          </div>
+          <p className="">
+            {data.description?.split(" ").slice(0, 9).join(" ")}
+          </p>
+          <p className="absolute bottom-2">${data.price} - Night </p>
         </div>
-        <p className="">{description?.split(" ").slice(0, 9).join(" ")}</p>
-        <p className="absolute bottom-2">${price} - Night </p>
-      </div>
-    </article>
+      </article>
+    </Link>
   );
 };
 

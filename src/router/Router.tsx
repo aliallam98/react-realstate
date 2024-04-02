@@ -12,6 +12,7 @@ import EditListing from "../pages/EditListing";
 import Services from "../pages/Services";
 import About from "../pages/About";
 import AuthMiddleware from "@/components/AuthMiddleware";
+import FavoritesPage from "@/pages/Favorites";
 
 /**
  * An array of routes that are accessible to the public
@@ -101,6 +102,14 @@ const router = createBrowserRouter([
         element: (
           <AuthMiddleware>
             <UserListings />
+          </AuthMiddleware>
+        ),
+      },
+      {
+        path: "/my-favorites",
+        element: (
+          <AuthMiddleware>
+            <FavoritesPage />
           </AuthMiddleware>
         ),
       },

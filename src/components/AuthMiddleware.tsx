@@ -38,13 +38,13 @@ const AuthMiddleware = ({ children }: IProps) => {
   console.log(isAuthRoute);
 
   let expirationTime = 0;
+  const currentTime = Date.now();
+
   // const token: string | null = localStorage.getItem("token") || null;
-  console.log(token);
 
   // Improved token expiration check with optional chaining:
   // if (token) {
   //   const decoded: Decoded = jwtDecode(token) || null; // Explicitly type 'Decoded'
-  //   const currentTime = Date.now();
 
   //   if (decoded) {
   //     expirationTime = decoded.exp * 1000;

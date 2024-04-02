@@ -228,14 +228,24 @@ const Profile = () => {
           >
             Submit
           </Button>
-          <Button
-            asChild
-            type="submit"
-            className="w-full bg-mainColor hover:bg-mainColor/80 text-white  rounded-3xl"
-            disabled={loading}
-          >
-            <Link to={"/my-listings"}>My Listings</Link>
-          </Button>
+          <div className="space-y-2">
+            <Button
+              asChild
+              type="submit"
+              className="w-full bg-mainColor hover:bg-mainColor/80 text-white  rounded-3xl"
+              disabled={loading}
+            >
+              <Link to={"/my-listings"}>My Listings</Link>
+            </Button>
+            <Button
+              asChild
+              type="submit"
+              className="w-full bg-mainColor hover:bg-mainColor/80 text-white  rounded-3xl"
+              disabled={loading}
+            >
+              <Link to={"/my-favorites"}>My Favorites</Link>
+            </Button>
+          </div>
         </form>
       </Form>
     </section>

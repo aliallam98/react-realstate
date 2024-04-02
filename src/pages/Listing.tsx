@@ -23,17 +23,6 @@ const Listing = () => {
         toast.error(error.message);
       });
   }, [id]);
-  // const images = [
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/17188ebc-a038-47c3-95a9-a7b498da964c.jpeg?im_w=1200",
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/a4eedf9e-a7e3-471d-9d61-4d3741be2635.jpeg?im_w=720",
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/6e8c0b8f-ab6e-496f-b372-acf054561787.jpeg?im_w=720",
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/9d799b97-924b-4c42-b59a-378656c5e26c.jpeg?im_w=720",
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/17188ebc-a038-47c3-95a9-a7b498da964c.jpeg?im_w=1200",
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/a4eedf9e-a7e3-471d-9d61-4d3741be2635.jpeg?im_w=720",
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/6e8c0b8f-ab6e-496f-b372-acf054561787.jpeg?im_w=720",
-  //   "https://a0.muscache.com/im/pictures/hosting/Hosting-1020803619969682230/original/9d799b97-924b-4c42-b59a-378656c5e26c.jpeg?im_w=720",
-  // ];
-  // const apiImages = listing?.images
   const renderImages = listing?.images?.map((image, i) => (
     <Link
       key={i}

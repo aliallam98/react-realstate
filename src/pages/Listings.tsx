@@ -1,6 +1,5 @@
 import axios from "axios";
 import Card from "../components/Card";
-import { Link } from "react-router-dom";
 
 axios.defaults.withCredentials = true;
 import LoadingComponent from "../components/LoadingComponent";
@@ -8,8 +7,10 @@ import Pagination from "../components/Pagination";
 import { useState } from "react";
 import { IListing } from "@/types";
 import FlitteringMenu from "@/components/FlitteringMenu";
+import useGetAllFavorites from "@/hooks/useGetUserFavorites";
 
 const FilteringMenu = () => {
+  const { favorites } = useGetAllFavorites();
   const [filteringData, setFilteringData] = useState({
     page: "1",
     limit: "8",
@@ -63,21 +64,19 @@ const FilteringMenu = () => {
           <LoadingComponent />
         ) : (
           <div className="grid grow justify-center grid-cols-[repeat(auto-fill,minmax(270px,300px))] gap-4">
-            {listings.map((listing) => (
-              <Link
-                key={listing._id}
-                to={`/listing/${listing._id}`}
-                className="h-fit"
-              >
+            {listings.map((listing) => {
+              const isAddedToFavorites = favorites
+                ? !!favorites?.find((ele) => ele._id === listing._id!)
+                : false;
+
+              return (
                 <Card
-                  title={listing.title}
-                  address={listing.address}
-                  price={listing.price}
-                  images={listing.images}
-                  description={listing.description}
+                  data={listing}
+                  key={listing._id}
+                  isAddedToFavorites={isAddedToFavorites}
                 />
-              </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
