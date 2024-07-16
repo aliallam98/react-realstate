@@ -1,11 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Card from "@/components/Card";
 import LoadingComponent from "@/components/LoadingComponent";
 import { Button } from "@/components/ui/button";
 import useGetAllFavorites from "@/hooks/useGetUserFavorites";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const FavoritesPage = () => {
-  const { favorites, isLoading } = useGetAllFavorites();
+  const { favorites, isLoading,setRefetchFavorites } = useGetAllFavorites();
+  
+
+  
 
   if (isLoading) {
     return <LoadingComponent />;
@@ -24,6 +29,7 @@ const FavoritesPage = () => {
                 data={ele}
                 key={ele._id}
                 isAddedToFavorites={isAddedToFavorites}
+                setRefetchFavorites = {setRefetchFavorites}
               />
             );
           })}

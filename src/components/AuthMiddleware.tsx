@@ -6,15 +6,15 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/router/Router";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
-interface Decoded {
-  email: string;
-  exp: number;
-  iat: number;
-  id: string;
-  name: string;
-}
+// interface Decoded {
+//   email: string;
+//   exp: number;
+//   iat: number;
+//   id: string;
+//   name: string;
+// }
 
 interface IProps {
   children: string | JSX.Element | JSX.Element[];
@@ -23,7 +23,7 @@ interface IProps {
 const AuthMiddleware = ({ children }: IProps) => {
   const { pathname } = useLocation();
 
-  const { loading, currentUser, token } = useSelector(
+  const { currentUser } = useSelector(
     (state: RootState) => state.user
   );
 
@@ -37,8 +37,8 @@ const AuthMiddleware = ({ children }: IProps) => {
   console.log(isPublicRoute);
   console.log(isAuthRoute);
 
-  let expirationTime = 0;
-  const currentTime = Date.now();
+  // let expirationTime = 0;
+  // const currentTime = Date.now();
 
   // const token: string | null = localStorage.getItem("token") || null;
 

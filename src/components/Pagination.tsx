@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface IProps {
   page: string | number;
@@ -16,9 +17,6 @@ const Pagination = ({
     const pageValue = value === "prev" ? Number(page) - 1 : Number(page) + 1;
     setFilteringData({ ...filteringData, page: pageValue.toString() });
   };
-
-  console.log(page);
-  console.log(totalPages);
 
   return (
     <div className="flex justify-center items-center gap-x-10 mt-10">

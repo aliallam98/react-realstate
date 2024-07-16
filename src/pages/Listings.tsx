@@ -11,6 +11,7 @@ import useGetAllFavorites from "@/hooks/useGetUserFavorites";
 
 const FilteringMenu = () => {
   const { favorites } = useGetAllFavorites();
+  
   const [filteringData, setFilteringData] = useState({
     page: "1",
     limit: "8",

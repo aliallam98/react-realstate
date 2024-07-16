@@ -9,19 +9,24 @@ import { IListing } from "../types";
 import { Skeleton } from "./ui/skeleton";
 import AddAndRemoveFromFavorites from "./AddAndRemoveFromFavorites";
 import { Link } from "react-router-dom";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface IProps {
   data: IListing;
-  isAddedToFavorites:boolean
+  isAddedToFavorites: boolean;
+  setRefetchFavorites?: Dispatch<SetStateAction<boolean>>;
 }
-const Card = ({ data,isAddedToFavorites }: IProps) => {
+const Card = ({ data, isAddedToFavorites,setRefetchFavorites }: IProps) => {
+  const [isAddedToFavoritesState , setIsAddedToFavoritesState] = useState(isAddedToFavorites)
   return (
-    <Link to={`/listing/${data._id}`}>
-      <article className="relative border border-neutral-200  rounded-3xl overflow-hidden shadow-md h-[415px] max-w-[400px] mx-auto">
-        <AddAndRemoveFromFavorites
-          listingId={data._id!}
-          isAddedToFavorites={isAddedToFavorites}
-        />
+    <article className="relative border border-neutral-200  rounded-3xl overflow-hidden shadow-md h-[415px] w-full max-w-[400px] mx-auto">
+      <AddAndRemoveFromFavorites
+        listingId={data._id!}
+        isAddedToFavorites={isAddedToFavoritesState}
+        setIsAddedToFavoritesState = {setIsAddedToFavoritesState}
+        setRefetchFavorites = {setRefetchFavorites}
+      />
+      <Link to={`/listing/${data._id}`}>
         <Swiper
           modules={[Navigation, Pagination]}
           slidesPerView={1}
@@ -48,8 +53,8 @@ const Card = ({ data,isAddedToFavorites }: IProps) => {
           </p>
           <p className="absolute bottom-2">${data.price} - Night </p>
         </div>
-      </article>
-    </Link>
+      </Link>
+    </article>
   );
 };
 
